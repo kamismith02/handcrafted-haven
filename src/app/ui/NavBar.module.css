@@ -1,0 +1,35 @@
+.navbar {
+    background-color: #3c574f;
+    color: #f4ede1;
+    padding: 16px;
+  }
+
+  .logo{
+    margin: .3rem;
+  }
+
+  .menuDesktop {
+    display: flex;
+    justify-content: space-around;
+  }
+  
+  .menuDesktop a {
+    margin-right: 16px;
+    text-decoration: none;
+    color: #f4ede1;
+  }
+  
+  .menuDesktop a:hover {
+    text-decoration: underline;
+  }
+   
+  @media (max-width: 720px) {
+    
+    .menuDesktop {
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+  }
+  

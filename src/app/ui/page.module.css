@@ -1,0 +1,35 @@
+.page {
+  display: grid;
+  grid-template-rows: 20px 1fr 20px;
+  align-items: center;
+  justify-items:center;
+  min-height: 100vh;
+  padding: 80px;
+  gap: 64px;
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+.main {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 32px;
+  grid-row-start: 2;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px;
+  justify-content: space-around;
+}
+
+@media (max-width: 600px) {
+  .page {
+    padding: 32px;
+    padding-bottom: 80px;
+  }
+
+  .main {
+    align-items: center;
+  }
+
+}
