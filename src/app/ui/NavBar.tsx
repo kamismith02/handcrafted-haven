@@ -9,8 +9,8 @@ const NavBar: React.FC = () => {
           <a href="/">
           <Image
             className={styles.logo}
-            src="/logo-placeholder-image.png"
-            alt="logo placeholder"
+            src="/mini-logo.webp"
+            alt="Handracfted-haven logo"
             width={150}
             height={150}
             priority
