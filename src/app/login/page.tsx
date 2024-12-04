@@ -1,4 +1,4 @@
-import { playfairDisplay, dancingScript, lora } from '@/app/ui/fonts';
+import { lora } from '@/app/ui/fonts';
 import "../ui/globals.css";
 import styles from "../ui/page.module.css";
 
