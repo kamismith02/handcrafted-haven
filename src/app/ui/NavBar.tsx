@@ -19,6 +19,10 @@ const NavBar: React.FC = () => {
         <Link href="/login" passHref>
           <a>Login</a>
         </Link>
+        <Link href="/profile" passHref
+          className={styles.profile}>
+          <a>Profile</a>
+        </Link>
 
         <Image
           className={styles.logo}
