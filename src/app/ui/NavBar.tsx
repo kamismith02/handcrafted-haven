@@ -1,27 +1,33 @@
 import React from 'react';
 import Image from "next/image";
-import styles from './NavBar.module.css'; // CSS Module
+import styles from './NavBar.module.css';
+import Link from 'next/link';
 
 const NavBar: React.FC = () => {
   return (
     <nav className={styles.navbar}>
-        <div>
-          <a href="/">
-          <Image
-            className={styles.logo}
-            src="/mini-logo.webp"
-            alt="Handracfted-haven logo"
-            width={150}
-            height={150}
-            priority
-            />
-          </a>            
-        </div>
       <div className={styles.menuDesktop}>
-        <a href="/">Home</a>
-        <a href="#">Products</a>
-        <a href="#">Sale</a>
-        <a href="/login">Login</a>
+        <Link href="/" passHref>
+          <a>Home</a>
+        </Link>
+        <Link href="/products" passHref>
+          <a>Products</a>
+        </Link>
+        <Link href="/sale" passHref>
+          <a>Sale</a>
+        </Link>
+        <Link href="/login" passHref>
+          <a>Login</a>
+        </Link>
+
+        <Image
+          className={styles.logo}
+          src="/mini-logo.webp"
+          alt="Handracfted-haven logo"
+          width={150}
+          height={150}
+          priority
+          /> 
       </div>
     </nav>
   );
