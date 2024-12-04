@@ -7,24 +7,7 @@ const NavBar: React.FC = () => {
   return (
     <nav className={styles.navbar}>
       <div className={styles.menuDesktop}>
-        <Link href="/" passHref>
-          <a>Home</a>
-        </Link>
-        <Link href="/products" passHref>
-          <a>Products</a>
-        </Link>
-        <Link href="/sale" passHref>
-          <a>Sale</a>
-        </Link>
-        <Link href="/login" passHref>
-          <a>Login</a>
-        </Link>
-        <Link href="/profile" passHref
-          className={styles.profile}>
-          <a>Profile</a>
-        </Link>
-
-        <Image
+      <Image
           className={styles.logo}
           src="/mini-logo.webp"
           alt="Handracfted-haven logo"
@@ -32,6 +15,12 @@ const NavBar: React.FC = () => {
           height={150}
           priority
           /> 
+        <Link href="/">Home</Link>
+        <Link href="/products">Products</Link>
+        <Link href="/sale">Sale</Link>
+        <Link href="/login">Login</Link>
+        <Link href="/profile"
+          className={styles.profile}>Profile</Link>
       </div>
     </nav>
   );
