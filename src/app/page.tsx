@@ -1,6 +1,6 @@
 import Carousel from './ui/Carousel';
 import CategoryCard from './ui/CategoryCard';
-import { playfairDisplay, dancingScript, lora } from '@/app/ui/fonts';
+import { playfairDisplay, lora } from '@/app/ui/fonts';
 import "./ui/globals.css";
 import styles from "./ui/page.module.css";
 
