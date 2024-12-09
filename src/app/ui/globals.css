@@ -1,17 +1,15 @@
-:root {
-  --background: #f4ede1;
-  --text: #1e1d20;
-  --second: #3c574f;
-  --third: #802d0f;
-  --fourth: #c5a981;
-}
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Lora:ital,wght@0,400..700;1,400..700&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
+@layer base {
+  body {
+    @apply bg-*-gray-khaki-medium
+  }
+}
+/* 
 html,
 body {
   max-width: 100vw;
@@ -43,5 +41,5 @@ a {
   padding: 1rem; 
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
+} */
 

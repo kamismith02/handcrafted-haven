@@ -69,9 +69,16 @@ export async function getFavorites(id: string): Promise<FavoriteItem[]>{
 }
 
 export async function removeFromFavorites(userId: string, productId: string) {
-  try {const client = await connectToDatabase();
-  const collection = client.db('handcrafted-haven').collection('users');
-  const deleteFav = await collection.deleteOne({_id: userId}, {q : {favoriteItems : {_id : productId}}, limit: 1})}
+  try {
+    const client = await connectToDatabase();
+    const collection = client.db('handcrafted-haven').collection('users');
+    const deleteFav = await collection.updateOne({_id: userId}, {"$pull" : {favoriteItems : {_id : productId}}})
+    if (deleteFav.modifiedCount = 1){
+      return true;
+    }
+    else {
+      return false;
+    }}
   catch (error) {
     console.error(`Failed to delete favorite: `, error);
     throw new Error("Sorry, but " + error);
@@ -83,7 +90,7 @@ export async function removeFromFavorites(userId: string, productId: string) {
 async function getProductInfo(item: any){
   const client = await connectToDatabase();
   const collection = client.db('handcrafted-haven').collection('products');
-  const data = await collection.findOne({_id: item}, {projection: {productName: 1, image:1, price:1}})
+  const data = await collection.findOne({_id: item});
   console.log(data)
   return data;
 }
