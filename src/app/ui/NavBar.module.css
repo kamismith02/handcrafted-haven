@@ -1,35 +1,87 @@
 .navbar {
-    background-color: #3c574f;
-    color: #f4ede1;
-    padding: 16px;
-  }
+  background-color: #3c574f;
+  color: #f4ede1;
+  padding: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
 
-  .logo{
-    margin: .3rem;
-  }
+.logo {
+  margin: 0;
+}
 
+.menuDesktop {
+  display: flex;
+  flex: 1;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.menuDesktop a {
+  text-decoration: none;
+  color: #f4ede1;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.menuDesktop a:hover {
+  background-color: #f4ede1;
+  color: #3c574f;
+  border: 1px solid #3c574f;
+}
+
+.hamburger {
+  display: none;
+  cursor: pointer;
+  font-size: 24px;
+  color: #f4ede1;
+  border: none;
+  background: none;
+}
+
+.menuMobile {
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: #3c574f;
+  padding: 4px 0;
+}
+
+.menuMobile a {
+  text-decoration: none;
+  color: #f4ede1;
+  padding: 12px 16px;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.menuMobile a:hover {
+  background-color: #f4ede1;
+  color: #3c574f;
+  border: 1px solid #3c574f;
+}
+
+@media (max-width: 720px) {
   .menuDesktop {
-    display: flex;
-    justify-content: space-around;
+    display: none;
   }
-  
-  .menuDesktop a {
-    margin-right: 16px;
-    text-decoration: none;
-    color: #f4ede1;
-  }
-  
-  .menuDesktop a:hover {
-    text-decoration: underline;
-  }
-   
-  @media (max-width: 720px) {
-    
-    .menuDesktop {
-      flex-direction: column;
-      align-items: center;
-      gap: 1rem;
-    }
 
+  .hamburger {
+    display: block;
   }
-  
+
+  .menuMobile {
+    display: flex;
+  }
+
+  .menuHidden {
+    display: none !important;
+    /* Hide the menu when not active */
+  }
+}
