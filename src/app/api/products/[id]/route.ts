@@ -20,7 +20,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
     const reviews = data.rows.map((row: any) => ({
       reviewId: row.review_id,
       userId: row.user_id,
-      userName: row.user_name,
+      userName:row.user_name,
       comment: row.comment,
       rating: row.rating,
       createdAt: row.created_at,
