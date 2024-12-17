@@ -1,7 +1,6 @@
 'use client'
 
-import { FavoriteItem, getFavorites } from '@/app/lib/data'; // Adjust the import path
-import { removeFromFavorites } from '@/app/lib/data';
+import { FavoriteItem, getFavorites, removeFromFavorites  } from '@/app/lib/data';
 
 export default function FavCardWrapper({ favorites }: { favorites : FavoriteItem[] }) {
     if (favorites.length === 0){ return <div>Error: no favorites to display!</div>}
