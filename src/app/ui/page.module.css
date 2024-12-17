@@ -2,34 +2,134 @@
   display: grid;
   grid-template-rows: 20px 1fr 20px;
   align-items: center;
-  justify-items:center;
+  justify-items: center;
   min-height: 100vh;
   padding: 80px;
   gap: 64px;
-  background-color: var(--background);
-  color: var(--foreground);
+  background-color: #f4ede1;
+  color: #1E1D20;
 }
 
 .main {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  align-items: center;
   width: 100%;
   gap: 32px;
   grid-row-start: 2;
   max-width: 1200px;
   margin: 0 auto;
   padding: 16px;
-  justify-content: space-around;
+  justify-content: center;
 }
+
+.welcomeText {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #3C574F;
+  margin: 0;
+  text-align: center;
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #3C574F;
+  text-align: center;
+}
+
+.logoSection {
+  margin: 2rem 0;
+  text-align: center;
+}
+
+.logo {
+  max-width: 500px;
+  margin-bottom: 1rem;
+}
+
+.question {
+  font-size: 1.5rem;
+  margin-bottom: 0.8rem;
+  text-align: center;
+  font-weight: bold;
+  color:#3C574F;
+}
+
+.buttonSection {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.sellingButton,
+.buyingButton {
+  background-color: #802D0F;
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.sellingButton:hover,
+.buyingButton:hover {
+  background-color: #a04141;
+}
+
+.footerLogo {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.smallLogo {
+  max-width: 50px;
+}
+
+
+.footer {
+  background-color: #3c574f;
+  color: #f4ede1;
+  text-align: center;
+  padding: 1rem;  
+}
+
 
 @media (max-width: 600px) {
   .page {
     padding: 32px;
     padding-bottom: 80px;
+    gap: 32px;
   }
 
   .main {
-    align-items: center;
+    flex-direction: column;
+    gap: 24px;
+    padding: 8px;
   }
 
+  .welcomeText {
+    font-size: 2rem;
+  }
+
+  .title {
+    font-size: 2.5rem;
+  }
+
+  .logo {
+    max-width: 250px;
+  }
+
+  .buttonSection {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .sellingButton,
+  .buyingButton {
+    width: 100%;
+  }
 }

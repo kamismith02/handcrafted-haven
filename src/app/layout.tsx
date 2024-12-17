@@ -3,8 +3,6 @@ import "./ui/globals.css";
 import NavBar from "./ui/NavBar";
 import Footer from "./ui/Footer";
 
-
-
 export const metadata: Metadata = {
   title: "Handcrafted Haven Page",
   description: "Handcrafted Haven Page",

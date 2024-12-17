@@ -1,6 +1,8 @@
+import styles from "./page.module.css";
+
 const Footer: React.FC = () => {
     return (
-      <footer className="footer">
+      <footer className={styles.footer}>
         &copy; 2024 Handcrafted Haven. All rights reserved.
       </footer>
     );

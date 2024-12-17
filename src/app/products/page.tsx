@@ -20,7 +20,6 @@ export default function ProductListPage() {
   const [minPrice, setMinPrice] = useState<number>(0);
   const [maxPrice, setMaxPrice] = useState<number>(1000);
 
-  // Buscar produtos da API PostgreSQL
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -55,7 +54,6 @@ export default function ProductListPage() {
     setMaxPrice(Number(event.target.value));
   };
 
-  // Filtrar produtos baseados em busca, categoria e faixa de preço
   const filteredProducts = products.filter((product) => {
     const matchesSearch = product.product_name.toLowerCase().includes(searchTerm);
     const matchesCategory = categoryFilter === "All" || product.category === categoryFilter;
@@ -64,7 +62,6 @@ export default function ProductListPage() {
     return matchesSearch && matchesCategory && matchesPriceRange;
   });
 
-  // Categorias únicas para o filtro
   const categories = [
     "All",
     ...new Set(products.map((product) => product.category)),
@@ -73,7 +70,6 @@ export default function ProductListPage() {
   return (
     <div className={styles.pageContainer}>
       <div className={styles.filtersContainer}>
-        {/* Barra de Pesquisa */}
         <div className={styles.searchBarContainer}>
           <input
             type="text"
@@ -84,7 +80,6 @@ export default function ProductListPage() {
           />
         </div>
 
-        {/* Filtro por Categoria */}
         <div className={styles.filterCategory}>
           <label htmlFor="category">Category:</label>
           <select id="category" value={categoryFilter} onChange={handleCategoryChange}>
@@ -96,7 +91,6 @@ export default function ProductListPage() {
           </select>
         </div>
 
-        {/* Filtro por Faixa de Preço */}
         <div className={styles.filterPrice}>
           <label htmlFor="minPrice">Price Range:</label>
           <div>
@@ -119,7 +113,6 @@ export default function ProductListPage() {
         </div>
       </div>
 
-      {/* Grid de Produtos */}
       <div className={styles.productGrid}>
         {filteredProducts.length > 0 ? (
           filteredProducts.map((product) => (
