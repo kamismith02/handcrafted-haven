@@ -1,9 +1,6 @@
-import { useActionState, useState } from "react";
-import { State, User } from "@/app/ui/profile/InitializeUser";
-import { updateProfile } from "@/app/profile/[id]/actions";
-import { getUser, getFavorites } from "@/app/lib/data";
+
+import { getUser} from "@/app/lib/data";
 import EditForm from "@/app/ui/profile/editform";
-import { redirect } from "next/dist/server/api-utils";
 import { notFound } from "next/navigation";
 
 export default async function Page (props: { params: Promise<{ id: string }> }) {
