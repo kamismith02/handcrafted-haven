@@ -16,6 +16,7 @@ export default {
       'sm': '.125rem',
       DEFAULT: '.25rem',
       'lg': '.5rem',
+      'xl': '1.25rem',
       'full': '9999px',
     },
     extend: {
