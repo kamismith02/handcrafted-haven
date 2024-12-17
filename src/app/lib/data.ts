@@ -1,108 +1,130 @@
-'use server'
+import { sql } from '@vercel/postgres';
+import { formatCurrency } from './utils';
 
-import { MongoClient, ObjectId } from 'mongodb';
-const uri = process.env.MONGODB_URI;
+const ITEMS_PER_PAGE = 6;
 
-
-if (!uri) {
-  throw new Error('Please define the uri environment variable');
-}
-
-let cachedClient: any;
-
-type FavoriteItem = {
-  _id: string;
-  sellerId: string;
-  productName: string;
-  description: string;
-  price: number;
-  category: string;
-  images: string[];
-};
-
-export async function connectToDatabase() {
-  if (cachedClient) {
-    return cachedClient;
-  }
+export async function fetchSellers() {
   try {
-    const client = new MongoClient(uri!);
-
-    await client.connect();
-    console.log('connected to database')
-    cachedClient = client;
-    return client;}
-  catch (error){
-    console.log(error)
+    const data = await sql`SELECT id, shop_name, user_id FROM sellers`;
+    return data.rows;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch sellers.');
   }
 }
 
-// User Functions
-
-export async function getUser(id: string){
-  const client = await connectToDatabase();
-  const collection = client.db('handcrafted-haven').collection('users');
-
-  const data = await collection.find({_id: new ObjectId(id)}).toArray();
-  return data;
-}
-
-export async function getFavorites(id: string): Promise<FavoriteItem[]>{
-  const newArray: FavoriteItem[] = [];
-  const client = await connectToDatabase();
-  const collection = client.db('handcrafted-haven').collection('users');
-  const data = await collection.findOne({_id: id}, {projection: {favoriteItems: 1}});
-  const items = data.favoriteItems;
-  console.log(items);
-
-  for (const element of items) {
-    try {
-        const info = await getProductInfo(element); 
-        if (info) {
-            newArray.push(info); 
-        }
-    } catch (error) {
-        console.error(`Failed to fetch product info for item ${element}:`, error);
-    }
-}
-
-  return newArray || [];
-}
-
-export async function removeFromFavorites(userId: string, productId: string) {
+export async function fetchUsers() {
   try {
-    const client = await connectToDatabase();
-    const collection = client.db('handcrafted-haven').collection('users');
-    const deleteFav = await collection.updateOne({_id: userId}, {"$pull" : {favoriteItems : {_id : productId}}})
-    if (deleteFav.modifiedCount = 1){
-      return true;
-    }
-    else {
-      return false;
-    }}
-  catch (error) {
-    console.error(`Failed to delete favorite: `, error);
-    throw new Error("Sorry, but " + error);
+    const data = await sql`SELECT id, full_name, address, phone_number, status, avatar, email FROM users`;
+    return data.rows;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch users.');
   }
 }
 
-// Product Functions
-
-async function getProductInfo(item: any){
-  const client = await connectToDatabase();
-  const collection = client.db('handcrafted-haven').collection('products');
-  const data = await collection.findOne({_id: item});
-  console.log(data)
-  return data;
+export async function fetchFavorites(userId: string) {
+  try {
+    const data = await sql`SELECT product_id FROM favorites WHERE user_id = ${userId}`;
+    return data.rows;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch favorites.');
+  }
 }
 
-// export async function getProductInfo({ favorites }: { favorites: any[] }) {
-//   const client = await connectToDatabase();
-//   const collection = client.db('handcrafted-haven').collection('products');
-//   favorites.map((item: any) => {
-//     console.log(item);
-//     const data = await collection.findOne({_id: item}, {projection: {productName: 1, image:1, price:1}})
-//     console.log(data)
-//     return data
-//   })
-//   return favorites;
-// }
+export async function fetchOrderItems(orderId: string) {
+  try {
+    const data = await sql`
+      SELECT id, product_id, quantity, price
+      FROM order_items
+      WHERE order_id = ${orderId}`;
+    return data.rows;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch order items.');
+  }
+}
+
+export async function fetchOrders() {
+  try {
+    const data = await sql`
+      SELECT orders.id, orders.total_price, orders.address, users.full_name, users.email
+      FROM orders
+      JOIN users ON orders.user_id = users.id`;
+    return data.rows.map((order) => ({
+      ...order,
+      total_price: formatCurrency(order.total_price),
+    }));
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch orders.');
+  }
+}
+
+export async function fetchFilteredProducts(query: string, currentPage: number) {
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+  try {
+    const products = await sql`
+      SELECT id, price, sale_info, seller_id, product_name, description, category, image
+      FROM products
+      WHERE
+        product_name ILIKE ${`%${query}%`} OR
+        description ILIKE ${`%${query}%`} OR
+        category ILIKE ${`%${query}%`}
+      ORDER BY product_name ASC
+      LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}`;
+    return products.rows;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch products.');
+  }
+}
+
+export async function fetchProductPages(query: string) {
+  try {
+    const count = await sql`
+      SELECT COUNT(*)
+      FROM products
+      WHERE
+        product_name ILIKE ${`%${query}%`} OR
+        description ILIKE ${`%${query}%`} OR
+        category ILIKE ${`%${query}%`}`;
+    const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
+    return totalPages;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch product pages.');
+  }
+}
+
+// Fetch product by ID
+export async function fetchProductById(id: string) {
+  console.log("fetching product")
+  try {
+    const data = await sql`
+      SELECT id, price, sale_info, seller_id, product_name, description, category, image
+      FROM products
+      WHERE id = ${id}`;
+      console.log("product found")
+    return data.rows[0];
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch product.');
+  }
+}
+
+export async function fetchCustomersWithOrders() {
+  try {
+    const data = await sql`
+      SELECT users.id, users.full_name, users.email, COUNT(orders.id) AS total_orders
+      FROM users
+      LEFT JOIN orders ON users.id = orders.user_id
+      GROUP BY users.id, users.full_name, users.email
+      ORDER BY users.full_name ASC`;
+    return data.rows;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch customers with orders.');
+  }
+}
