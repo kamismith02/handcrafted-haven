@@ -140,3 +140,12 @@
     margin: 0.25rem 0;
     font-size: 0.9rem;
 }
+
+.cardList {
+    display: flex;  
+    flex-wrap: nowrap;
+    overflow-x: auto; 
+    gap: 15px;  
+    padding: 10px 0;
+  }
+  
