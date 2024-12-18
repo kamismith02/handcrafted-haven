@@ -1,0 +1,9 @@
+# https://nextjs.org/learn/dashboard-app/setting-up-your-database#create-a-postgres-database
+POSTGRES_URL="postgres://default:A2bDvT9yQRLZ@ep-damp-scene-a4ivaizf-pooler.us-east-1.aws.neon.tech:5432/verceldb?sslmode=require"
+POSTGRES_PRISMA_URL="postgres://default:A2bDvT9yQRLZ@ep-damp-scene-a4ivaizf-pooler.us-east-1.aws.neon.tech:5432/verceldb?sslmode=require&pgbouncer=true&connect_timeout=15"
+POSTGRES_URL_NO_SSL="postgres://default:A2bDvT9yQRLZ@ep-damp-scene-a4ivaizf-pooler.us-east-1.aws.neon.tech:5432/verceldb"
+POSTGRES_URL_NON_POOLING="postgres://default:A2bDvT9yQRLZ@ep-damp-scene-a4ivaizf.us-east-1.aws.neon.tech:5432/verceldb?sslmode=require"
+POSTGRES_USER="default"
+POSTGRES_HOST="ep-damp-scene-a4ivaizf-pooler.us-east-1.aws.neon.tech"
+POSTGRES_PASSWORD="A2bDvT9yQRLZ"
+POSTGRES_DATABASE="verceldb"
