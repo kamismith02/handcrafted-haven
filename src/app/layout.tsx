@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./ui/globals.css";
 import NavBar from "./ui/NavBar";
 import Footer from "./ui/Footer";
+import { SessionProvider } from 'next-auth/react';
 
 export const metadata: Metadata = {
   title: "Handcrafted Haven Page",
@@ -14,14 +15,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>
-        <header>
-        <NavBar />
-        </header>
-        {children}
-        <Footer />
-      </body>
-    </html>
+    <SessionProvider>
+      <html lang="en">
+        <body>
+          <header>
+          <NavBar />
+          </header>
+          {children}
+          <Footer />
+        </body>
+      </html>
+    </SessionProvider>
   );
 }
