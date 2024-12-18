@@ -3,7 +3,7 @@
 export default function Page() {
     return (
         <>
-            <div className="relative min-h-80 w-full flex flex-col justify-center items-center my-6 bg-white shadow-sm border border-slate-200 rounded-lg p-2">
+            <div className="relative min-h-80 flex flex-col justify-center items-center m-6 bg-white shadow-sm border border-slate-200 rounded-lg p-2">
                 <div className="p-3 text-center">
                     <div className="flex justify-center mb-4">
                         <img className="w-20 object-center" src=".\4501552.png" alt="Lost?" />
