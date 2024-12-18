@@ -5,10 +5,12 @@ import { useRouter } from 'next/navigation';
 import { lora } from '@/app/ui/fonts';
 import "../ui/globals.css";
 import styles from "../ui/page.module.css";
+import { useActionState } from 'react';
+import { registerUser } from "@/app/lib/actions";
 
 const RegisterForm: React.FC = () => {
   const router = useRouter();
-
+const [errorMessage, formAction] = useActionState(registerUser, undefined);
   const handleSignInClick = (event: React.MouseEvent) => {
     event.preventDefault();
     router.push('/login');
@@ -20,7 +22,7 @@ const RegisterForm: React.FC = () => {
         <h2 className="text-3xl font-bold mb-4 text-gray-900 text-center">
           Create your account
         </h2>
-        <form>
+        <form className="font-sans" action={formAction}>
           {/* Name Input */}
           <div className="mb-6">
             <label

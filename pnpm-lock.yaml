@@ -35,6 +35,9 @@ importers:
       dotenv:
         specifier: ^16.4.5
         version: 16.4.7
+      jose:
+        specifier: ^5.9.6
+        version: 5.9.6
       mongodb:
         specifier: ^6.11.0
         version: 6.12.0
