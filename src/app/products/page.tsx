@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "../ui/productList.module.css";
 import Link from "next/link";
+import Image from 'next/image';
 
 interface Product {
   id: string;
@@ -129,9 +130,12 @@ export default function ProductListPage() {
           filteredProducts.map((product) => (
             <div key={product.id} className={styles.productCard}>
               <Link href={`/products/${product.id}`}>
-                <img
+                <Image
                   src={product.image}
                   alt={product.product_name}
+                  width={400}
+                  height={400}
+                  priority
                   className={styles.productImage}
                 />
                 <h2 className={styles.productName}>{product.product_name}</h2>
