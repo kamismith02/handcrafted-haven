@@ -3,27 +3,40 @@
 import React from "react";
 import { useRouter } from 'next/navigation';
 import { lora } from '@/app/ui/fonts';
-import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
 import "../ui/globals.css";
 import styles from "../ui/page.module.css";
-import { useActionState } from 'react';
-import { authenticate } from '@/app/lib/actions';
 
-const LoginForm: React.FC = () => {
+const RegisterForm: React.FC = () => {
   const router = useRouter();
-  const [errorMessage, formAction] = useActionState(authenticate, undefined);
-  const handleSignUpClick = (event: React.MouseEvent) => {
+
+  const handleSignInClick = (event: React.MouseEvent) => {
     event.preventDefault();
-    router.push('/register');
+    router.push('/login');
   };
 
   return (
-    <div className="flex items-center justify-center">
-      <div className="bg-white p-12 rounded-lg shadow-md w-full max-w-xl">
-        <h2 className="text-3xl font-bold mb-8 text-gray-900 text-center font-sans">
-          Sign in to your account
+    <div className="font-sans">
+      <div className="bg-white p-12 rounded-lg shadow-md w-full max-w-3xl mx-auto">
+        <h2 className="text-3xl font-bold mb-4 text-gray-900 text-center">
+          Create your account
         </h2>
-        <form className="font-sans" action={formAction}>
+        <form>
+          {/* Name Input */}
+          <div className="mb-6">
+            <label
+              htmlFor="name"
+              className="block text-gray-700 font-medium mb-2"
+            >
+              Your name
+            </label>
+            <input
+              type="text"
+              id="name"
+              placeholder="John Doe"
+              className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#3c574f] outline-none"
+            />
+          </div>
+
           {/* Email Input */}
           <div className="mb-6">
             <label
@@ -56,41 +69,36 @@ const LoginForm: React.FC = () => {
             />
           </div>
 
-          {errorMessage && (
-              <div className="mt-2 mb-4 flex items-center text-red-500">
-                <ExclamationCircleIcon className="mr-2 h-5 w-5" />
-                <p className="text-sm">{errorMessage}</p>
-              </div>
-            )}
-
-          {/* Remember Me + Forgot Password */}
-          <div className="flex items-center justify-between mb-8">
-            <label className="flex items-center">
-              <input
-                type="checkbox"
-                className="form-checkbox h-5 w-5 text-[#3c574f] focus:ring-[#3c574f]"
-              />
-              <span className="ml-2 text-gray-700 text-sm">Remember me</span>
+          {/* Confirm Password Input */}
+          <div className="mb-6">
+            <label
+              htmlFor="confirm-password"
+              className="block text-gray-700 font-medium mb-2"
+            >
+              Confirm Password
             </label>
-            <a href="#" className="text-[#3c574f] text-sm hover:underline">
-              Forgot password?
-            </a>
+            <input
+              type="password"
+              id="confirm-password"
+              placeholder="••••••••"
+              className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#3c574f] outline-none"
+            />
           </div>
 
-          {/* Sign In Button */}
+          {/* Register Button */}
           <button
             type="submit"
             className="w-full bg-red-800 text-white py-3 px-4 rounded-lg hover:bg-opacity-90 focus:outline-none"
           >
-            Sign in
+            Register
           </button>
         </form>
 
-        {/* Sign Up Link */}
+        {/* Sign In Link */}
         <p className="text-gray-600 text-center text-sm mt-8">
-          Don’t have an account yet?{" "}
-          <a href="#" className="text-[#3c574f] hover:underline" onClick={handleSignUpClick}>
-            Sign up
+          Already have an account?{" "}
+          <a href="#" className="text-[#3c574f] hover:underline" onClick={handleSignInClick}>
+            Sign in
           </a>
         </p>
       </div>
@@ -98,11 +106,11 @@ const LoginForm: React.FC = () => {
   );
 };
 
-export default function Login() {
+export default function Register() {
   return (
     <div className={styles.page}>
       <main className={`${lora.className} ${styles.main} py-4`}>
-        <LoginForm />
+        <RegisterForm />
       </main>
     </div>
   );
