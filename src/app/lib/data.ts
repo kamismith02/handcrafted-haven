@@ -96,10 +96,8 @@ export async function getFavorites(id: string) : Promise<FavoriteItem[]>{
   return [];
 } }
 
-export async function fetchInvoicesPages(
-  userId: string,
-  query: string,
-) {
+
+export async function removeFromFavorites(userId: string, productId: string) {
   try {
     const query = await sql.query(`DELETE FROM favorites WHERE user_id = '${userId}' AND product_id = '${[productId]}'`)
     revalidatePath(`/profile/${userId}`)
@@ -108,6 +106,7 @@ export async function fetchInvoicesPages(
       throw error;
     }
 }
+
 
 // Product Functions
 export async function getProductList(id: string) : Promise<Product[]>{
@@ -144,7 +143,7 @@ export async function getProductInfo(item: any){
     };
   return product }
 
-  export async function deleteProduct(id: string){
+export async function deleteProduct(id: string){
     try{const response= await sql.query(`DELETE FROM products WHERE id = $1`, [id])
 
     }
@@ -154,7 +153,7 @@ export async function getProductInfo(item: any){
   }
   }
   
-  export async function deleteProductFromAllFavorites(id: string){
+export async function deleteProductFromAllFavorites(id: string){
     const query = `DELETE FROM favorites WHERE product_id = ${id} RETURNING product_id`;
     try {
       const response = await sql.query(query);
