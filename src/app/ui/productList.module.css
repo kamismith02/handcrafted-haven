@@ -99,11 +99,12 @@
     font-size: 1.2rem;
     color: #3c574f;
     margin-bottom: 10px;
+    font-weight: bold;
 }
 
 .productCategory {
-    font-size: 14px;
-    color: #777;
+    font-size: 1.5rem;
+    color: #1e1d20;
 }
 
 /* Mobile Responsiveness */
@@ -131,6 +132,6 @@
     }
 
     .productName {
-        font-size: 18px;
+        font-size: 1.5rem;
     }
 }
