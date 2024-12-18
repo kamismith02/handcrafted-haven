@@ -8,7 +8,6 @@ export async function GET() {
       SELECT 
         id, 
         price, 
-        sale_info, 
         seller_id, 
         product_name, 
         description, 

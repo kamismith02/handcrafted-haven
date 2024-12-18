@@ -89,7 +89,6 @@
   max-width: 50px;
 }
 
-
 .footer {
   background-color: #3c574f;
   color: #f4ede1;
@@ -97,6 +96,51 @@
   padding: 1rem;  
 }
 
+/* Default form styles */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.formGroup label {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.formGroup input {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.submitButton {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 5px;
+  border: none;
+  background-color: #802D0F;
+  color: #fff;;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.submitButton:hover {
+  background-color: #a04141;
+}
 
 @media (max-width: 600px) {
   .page {

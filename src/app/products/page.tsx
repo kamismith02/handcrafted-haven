@@ -18,7 +18,7 @@ export default function ProductListPage() {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [categoryFilter, setCategoryFilter] = useState<string>("All");
   const [minPrice, setMinPrice] = useState<number>(0);
-  const [maxPrice, setMaxPrice] = useState<number>(1000);
+  const [maxPrice, setMaxPrice] = useState<number>(10000);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -28,7 +28,6 @@ export default function ProductListPage() {
           throw new Error("Failed to fetch products");
         }
         const data = await response.json();
-        console.log("Fetched products:", data.products);
         setProducts(data.products);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -42,7 +41,9 @@ export default function ProductListPage() {
     setSearchTerm(event.target.value.toLowerCase());
   };
 
-  const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleCategoryChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
     setCategoryFilter(event.target.value);
   };
 
@@ -55,9 +56,13 @@ export default function ProductListPage() {
   };
 
   const filteredProducts = products.filter((product) => {
-    const matchesSearch = product.product_name.toLowerCase().includes(searchTerm);
-    const matchesCategory = categoryFilter === "All" || product.category === categoryFilter;
-    const matchesPriceRange = product.price >= minPrice && product.price <= maxPrice;
+    const matchesSearch = product.product_name
+      .toLowerCase()
+      .includes(searchTerm);
+    const matchesCategory =
+      categoryFilter === "All" || product.category === categoryFilter;
+    const matchesPriceRange =
+      product.price >= minPrice && product.price <= maxPrice;
 
     return matchesSearch && matchesCategory && matchesPriceRange;
   });
@@ -70,8 +75,10 @@ export default function ProductListPage() {
   return (
     <div className={styles.pageContainer}>
       <div className={styles.filtersContainer}>
-        <div className={styles.searchBarContainer}>
+        <div className={styles.filterPrice}>
+          <label htmlFor="search">Search:</label>
           <input
+            id="search"
             type="text"
             className={styles.searchBar}
             placeholder="Search products..."
@@ -82,7 +89,11 @@ export default function ProductListPage() {
 
         <div className={styles.filterCategory}>
           <label htmlFor="category">Category:</label>
-          <select id="category" value={categoryFilter} onChange={handleCategoryChange}>
+          <select
+            id="category"
+            value={categoryFilter}
+            onChange={handleCategoryChange}
+          >
             {categories.map((category) => (
               <option key={category} value={category}>
                 {category}
@@ -124,8 +135,11 @@ export default function ProductListPage() {
                   className={styles.productImage}
                 />
                 <h2 className={styles.productName}>{product.product_name}</h2>
-                <p className={styles.productPrice}>${Number(product.price).toFixed(2)}</p>
+                <p className={styles.productPrice}>
+                  ${Number(product.price).toFixed(2)}
+                </p>
                 <p className={styles.productCategory}>{product.category}</p>
+                <p className={styles.productCategory}>{product.description}</p>
               </Link>
             </div>
           ))

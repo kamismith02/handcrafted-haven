@@ -11,11 +11,11 @@
 
 .searchBar {
     width: 80%;
-    padding: 12px;
-    font-size: 18px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    transition: all 0.3s ease;
+    padding: 6px;
+    font-size: 14px;
+    border: 1px solid  #f4ede1;
+    border-radius: 6px;
+    width: 140px;
 }
 
 .searchBar:focus {
