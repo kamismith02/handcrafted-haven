@@ -21,27 +21,24 @@ const NavBar: React.FC = () => {
         height={150}
         priority
       />
-      {/* Hamburger Icon */}
+      
       <button className={styles.hamburger} onClick={toggleMenu}>
         &#9776;
       </button>
 
-      {/* Desktop Menu */}
+      
       <div className={styles.menuDesktop}>
         <Link href="/">Home</Link>
         <Link href="/products">Products</Link>
-        <Link href="/sale">Sale</Link>
         <Link href="/login">Login</Link>
         <Link href="/profile">Profile</Link>
       </div>
 
-      {/* Mobile Menu */}
       <div
         className={`${styles.menuMobile} ${!isMenuOpen ? styles.menuHidden : ""}`}
       >
         <Link href="/">Home</Link>
         <Link href="/products">Products</Link>
-        <Link href="/sale">Sale</Link>
         <Link href="/login">Login</Link>
         <Link href="/profile">Profile</Link>
       </div>
