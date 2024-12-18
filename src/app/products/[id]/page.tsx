@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import styles from '../../ui/product.module.css';
-import Reviews from '../../ui/products/Reviews';
+import Reviews from '../../ui/products/reviews';
 import ProductCards from '../../ui/products/ProductCards';
 import { useParams } from 'next/navigation';
 
