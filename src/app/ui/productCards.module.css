@@ -1,0 +1,44 @@
+.cardContainer {
+  border: 1px solid #c5a981;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  text-align: center;
+  transition: transform 0.2s ease;
+  flex: 0 0 220px;
+  margin: 0 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.cardContainer:hover {
+  transform: scale(1.05);
+}
+
+.productImage {
+  width: 100%; 
+  height: 220px;
+  object-fit: cover;
+}
+
+.productInfo {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.productName {
+  font-size: 1.2rem;
+  margin: 5px 0;
+  color: #802d0f;
+  font-weight: bold;
+  text-align: center;
+}
+
+.productPrice {
+  color: #3c574f;
+  font-weight: bold;
+  text-align: center;
+}

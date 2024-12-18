@@ -1,0 +1,93 @@
+.reviewsContainer {
+  width: 100%;
+  border: 1px solid #c5a981;
+  border-radius: 20px;
+  padding: 16px;
+  background-color: #fff;
+  margin-bottom: 1rem;
+}
+
+.reviewsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.averageRating h2 {
+  font-size: 2rem;
+  margin: 0;
+}
+
+.averageRating .starSymbol {
+  color: gold;
+  font-size: 1.5rem;
+  margin: 4px 0;
+}
+
+.addReviewBtn {
+  background-color: #802d0f;
+  color: #f4ede1;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Lora', serif;
+  font-size: 1.2rem;
+  width: 30%;
+}
+
+.ratingDistribution {
+  margin-bottom: 16px;
+}
+
+.ratingRow {
+  display: flex;
+  align-items: center;
+  margin: 4px 0;
+}
+
+.ratingBar {
+  flex: 1;
+  height: 10px;
+  background-color: #eee;
+  border-radius: 5px;
+  margin: 0 8px;
+}
+
+.ratingFill {
+  height: 100%;
+  background-color: #ffcc00;
+  border-radius: 5px;
+}
+
+.commentsSection {
+  border-top: 1px solid #ddd;
+  padding-top: 16px;
+}
+
+.reviewItem {
+  margin-bottom: 16px;
+}
+
+.userName {
+  font-weight: bold;
+  color: #3c574f;
+}
+
+.comment {
+  font-style: italic;
+  color: #1e1d20;
+}
+
+.rating,
+.date {
+  font-size: 0.9rem;
+  color: #1e1d20;
+}
+
+.noReviews {
+  text-align: center;
+  color: #1e1d20;
+  font-style: italic;
+}
