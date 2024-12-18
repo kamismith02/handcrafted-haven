@@ -35,7 +35,7 @@ export default function Reviews({ reviews }: ReviewsProps) {
       body: JSON.stringify({
         comment,
         rating,
-        userId: session.user.id, // Aqui fazemos a verificação
+        userId: session.user.id,
       }),
       headers: {
         'Content-Type': 'application/json',

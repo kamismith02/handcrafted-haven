@@ -67,30 +67,37 @@ export default function Page() {
           <Image
             src={product.image}
             alt={product.product_name}
-            width={700}
-            height={700}
+            width={400}
+            height={400}
             priority
             className={styles.productImage}
           />
         </div>
 
-        <div className={styles.productInfo}>
-          <h1 className={styles.productPrice}>
-            {(product.product_name)}
-          </h1>
-          <h2 className={styles.productPrice}>
-            U$ {Number(product.price).toFixed(2)}
-          </h2>
-          <p className={styles.saleInfo}>{product.sale_info}</p>
-          <p className={styles.productDescription}>{product.description}</p>
-          <button
-            type="button"
-            className={styles.addToCartButton}
-            onClick={addProduct}
-          >
-            Add to cart
-          </button>
+        <div className={styles.productDetails}>
+          <div>
+            <h1 className={styles.productName}>{product.product_name}</h1>
+            <div className={styles.reviewsHeader}>
+              <div className={styles.averageRating}>
+                <p className={styles.starSymbol}>★★★★☆</p>
+                <span>{reviews.length} reviews</span>
+              </div>
+            </div>
+          </div>
+          <div><p className={styles.productDescription}>{product.description}</p></div>
         </div>
+
+          <div className={styles.footerSection}>
+            <h2 className={styles.productPrice}>U$ {Number(product.price).toFixed(2)}</h2>
+            <button
+              type="button"
+              className={styles.addToCartButton}
+              onClick={addProduct}
+            >
+              Add to Cart
+            </button>
+          </div>
+        
       </div>
 
       <Reviews reviews={reviews} />

@@ -1,9 +1,10 @@
 .reviewsContainer {
   width: 100%;
   border: 1px solid #c5a981;
-  border-radius: 8px;
+  border-radius: 20px;
   padding: 16px;
   background-color: #fff;
+  margin-bottom: 1rem;
 }
 
 .reviewsHeader {
@@ -28,9 +29,11 @@
   background-color: #802d0f;
   color: #f4ede1;
   border: none;
-  padding: 8px 16px;
+  padding: 10px 20px;
   border-radius: 4px;
   cursor: pointer;
+  font-family: 'Lora', serif;
+  font-size: 1.2rem;
 }
 
 .ratingDistribution {
