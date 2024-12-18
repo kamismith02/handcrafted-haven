@@ -1,5 +1,14 @@
 import { sql } from '@vercel/postgres';
 
+interface Review {
+  reviewId: number;
+  userId: string;
+  userName: string;
+  comment: string;
+  rating: number;
+  createdAt: string;
+}
+
 export async function GET(request: Request, { params }: { params: { id: string } }) {
   const { id } = await params;
   console.log("id", id);
@@ -13,14 +22,14 @@ export async function GET(request: Request, { params }: { params: { id: string }
     LEFT JOIN users u ON u.id = r.user_id
     WHERE p.id = ${id}
   `;
-  
-  
 
     const product = data.rows[0];
-    const reviews = data.rows.map((row: any) => ({
+
+    // Tipando o map com a interface Review
+    const reviews: Review[] = data.rows.map((row) => ({
       reviewId: row.review_id,
       userId: row.user_id,
-      userName:row.user_name,
+      userName: row.user_name,
       comment: row.comment,
       rating: row.rating,
       createdAt: row.created_at,
