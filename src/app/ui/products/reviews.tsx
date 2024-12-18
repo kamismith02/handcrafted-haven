@@ -132,7 +132,7 @@ export default function Reviews({ reviews }: ReviewsProps) {
         {reviews.map((review) => (
           <div key={review.reviewId} className={styles.reviewItem}>
             <p className={styles.userName}>{review.userName}</p>
-            <p className={styles.comment}>"{review.comment}"</p>
+            <p className={styles.comment}>{review.comment}</p>
             <p className={styles.rating}>Rating: {review.rating}/5</p>
             <p className={styles.date}>
               {new Date(review.createdAt).toLocaleDateString()}

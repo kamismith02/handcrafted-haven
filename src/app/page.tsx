@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { playfairDisplay, lora } from "@/app/ui/fonts";
+import { playfairDisplay } from "@/app/ui/fonts";
 import "./ui/globals.css";
+import Image from 'next/image';
 import styles from "./ui/page.module.css";
 
 export default function Home() {
@@ -11,9 +12,12 @@ export default function Home() {
         <h2 className={styles.title}>Handcrafted Haven</h2>
 
         <div className={styles.logoSection}>
-          <img
+        <Image
             src="/main-logo.webp"
             alt="Handcrafted Haven Logo"
+            width={500}
+            height={500}
+            priority
             className={styles.logo}
           />
         </div>
@@ -30,9 +34,12 @@ export default function Home() {
         </div>
 
         <div className={styles.footerLogo}>
-          <img
+          <Image
             src="/mini-logo.webp"
             alt="Small Handcrafted Haven Logo"
+            width={200}
+            height={200}
+            priority
             className={styles.smallLogo}
           />
         </div>
