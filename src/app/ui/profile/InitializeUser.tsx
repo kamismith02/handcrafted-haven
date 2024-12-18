@@ -1,26 +1,24 @@
 'use client'
 import { useState, useEffect } from 'react';
-import { getUser } from '@/app/lib/data';
 import { redirect } from 'next/navigation';
 
 export type User = {
     id: string;
-    fullName: string;
+    full_name: string;
     address: string;
-    phoneNumber: string;
+    phone_number: string;
     status: string;
-    isAuth: boolean;
     avatar: string; 
     email: string
 }
 
 export type State = {
     user?: User | null;
-    isAuth : boolean;
+
 }
 
 export default function InitializeUser({user} : {user: any}) {
-    const initialState : State = {user: null, isAuth: false }
+    const initialState : State = {user: null}
     const [userInfo, setUserInfo] = useState<State>(initialState)
     // export async function compileUserInfo(id : string) {
 
@@ -28,36 +26,39 @@ export default function InitializeUser({user} : {user: any}) {
       if (user) {
         const userData: User = {
           id: user.id,
-          fullName: user.fullName,
+          full_name: user.full_name,
           address: user.address,
-          phoneNumber: user.phoneNumber,
+          phone_number: user.phone_number,
           status: user.status,
-          isAuth: user.isAuth || true,
           avatar: user.avatar,
           email: user.email,
         };
 
         setUserInfo({
           user: userData,
-          isAuth: true,
         });
       }
     }, [user]);
 
-    if (!user.isAuth || user === null) {
+    const handleEditProfile = () => {
+      redirect(`/profile/edit/${user.id}`)
+    }
+    const handleManageShop = () => {
+      redirect(`/shop/${user.id}`)
+    }
+
+    if (user === null) {
             redirect('/notfound')
     }
 
     else if (user!.status = "seller") {
         return (
-            <div >
-              <a href="/profile/$id/edit">
-                <button className="w-full m-6 rounded-md bg-*-slate-gray-dark py-4 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-*-slate-gray focus:shadow-none active:bg-*-slate-gray-light hover:bg-*-slate-gray-light active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button">
+            <div className = "justify-center">
+                <button className="w-full rounded-lg overflow-hidden bg-*-slate-gray-dark py-2 px-4 border border-transparent text-center text-md text-white transition-all shadow-md hover:shadow-lg focus:bg-*-slate-gray focus:shadow-none active:bg-*-slate-gray-light hover:bg-*-slate-gray-light active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none m-2" type="button" onClick={handleEditProfile}>
                   Edit Profile
                 </button>
-              </a>
               <a href="#">
-                <button className="w-full rounded-md bg-*-slate-gray-dark py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-*-slate-gray focus:shadow-none active:bg-*-slate-gray-light hover:bg-*-slate-gray-light active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none" type="button">
+                <button className="w-full rounded-lg overflow-hidden bg-*-slate-gray-dark py-2 px-4 border border-transparent text-center text-md text-white transition-all shadow-md hover:shadow-lg focus:bg-*-slate-gray focus:shadow-none active:bg-*-slate-gray-light hover:bg-*-slate-gray-light active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none m-2" type="button" onClick={handleManageShop}>
                   Manage Shop
                 </button>
               </a>

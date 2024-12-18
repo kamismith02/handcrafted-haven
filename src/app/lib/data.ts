@@ -1,224 +1,165 @@
 import { sql } from '@vercel/postgres';
-import {
-  CustomerField,
-  CustomersTableType,
-  InvoiceForm,
-  InvoicesTable,
-  LatestInvoiceRaw,
-  Revenue,
-} from './definitions';
-import { formatCurrency } from './utils';
+import { User } from '../ui/profile/InitializeUser';
+import { revalidatePath } from 'next/cache';
+import { Seller } from '../profile/[id]/actions';
+import { Product } from '../ui/products/tempProductInfo';
 
-export async function fetchRevenue() {
-  try {
-    // Artificially delay a response for demo purposes.
-    // Don't do this in production :)
 
-    console.log('Fetching revenue data...');
-    await new Promise((resolve) => setTimeout(resolve, 3000));
+export type FavoriteItem = {
+  id: string;
+  seller_id: string;
+  product_id: string;
+  product_name: string;
+  description: string;
+  price: number;
+  category: string;
+  image: string;
+};
 
-    const data = await sql<Revenue>`SELECT * FROM revenue`;
 
-    console.log('Data fetch completed after 3 seconds.');
+// User Functions
 
-    return data.rows;
-  } catch (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to fetch revenue data.');
-  }
+export async function getUser(id: string){
+
+
+const response = await sql<User>`SELECT * FROM users WHERE id = ${id}`;
+const user : User = {
+ id: response.rows[0].id,
+ full_name: response.rows[0].full_name, 
+ address: response.rows[0].address,
+ phone_number : response.rows[0].phone_number,
+ status: response.rows[0].status,
+ email: response.rows[0].email,
+ avatar: response.rows[0].avatar
+}
+return user
 }
 
-export async function fetchLatestInvoices() {
-  try {
-    const data = await sql<LatestInvoiceRaw>`
-      SELECT invoices.amount, users.name, users.email, invoices.id
-      FROM invoices
-      JOIN users ON invoices.user_id = users.id
-      ORDER BY invoices.date DESC
-      LIMIT 5`;
+export async function getUserStatus(id:string){
 
-    const latestInvoices = data.rows.map((invoice) => ({
-      ...invoice,
-      amount: formatCurrency(invoice.amount),
-    }));
-    return latestInvoices;
-  } catch (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to fetch the latest invoices.');
-  }
+  const status = await sql.query(`SELECT status FROM users WHERE id = $1`, [id])
+  return status
 }
 
-export async function fetchCardData() {
-  try {
-    // You can probably combine these into a single SQL query
-    // However, we are intentionally splitting them to demonstrate
-    // how to initialize multiple queries in parallel with JS.
-    const invoiceCountPromise = sql`SELECT COUNT(*) FROM invoices`;
-    const customerCountPromise = sql`SELECT COUNT(*) FROM customers`;
-    const invoiceStatusPromise = sql`SELECT
-         SUM(CASE WHEN status = 'paid' THEN amount ELSE 0 END) AS "paid",
-         SUM(CASE WHEN status = 'pending' THEN amount ELSE 0 END) AS "pending"
-         FROM invoices`;
+export async function updateUser(id:string, full_name:string, address:string, phone_number:string, avatar:string){
+  const query = await sql.query(`UPDATE users 
+   SET full_name = $1, address = $2, phone_number = $3, avatar = $4 
+   WHERE id = $5`,
+  [full_name, address, phone_number, avatar, id])
 
-    const data = await Promise.all([
-      invoiceCountPromise,
-      customerCountPromise,
-      invoiceStatusPromise,
-    ]);
-
-    const numberOfInvoices = Number(data[0].rows[0].count ?? '0');
-    const numberOfCustomers = Number(data[1].rows[0].count ?? '0');
-    const totalPaidInvoices = formatCurrency(data[2].rows[0].paid ?? '0');
-    const totalPendingInvoices = formatCurrency(data[2].rows[0].pending ?? '0');
-
-    return {
-      numberOfCustomers,
-      numberOfInvoices,
-      totalPaidInvoices,
-      totalPendingInvoices,
-    };
-  } catch (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to fetch card data.');
-  }
+  return query
 }
 
-const ITEMS_PER_PAGE = 6;
-export async function fetchFilteredInvoices(
-  userId: string,
-  query: string,
-  currentPage: number,
-) {
-  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
-
-  try {
-    const invoices = await sql<InvoicesTable>`
-      SELECT
-        invoices.id,
-        invoices.amount,
-        invoices.date,
-        invoices.status,
-        users.name,
-        users.email,
-        profiles.image_url
-      FROM invoices
-      JOIN users ON invoices.user_id = users.id
-      JOIN profiles ON users.id = profiles.user_id
-      WHERE
-        users.id = ${userId} AND (
-          users.name ILIKE ${`%${query}%`} OR
-          users.email ILIKE ${`%${query}%`} OR
-          invoices.amount::text ILIKE ${`%${query}%`} OR
-          invoices.date::text ILIKE ${`%${query}%`} OR
-          invoices.status ILIKE ${`%${query}%`}
-    )
-      ORDER BY invoices.date DESC
-      LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
-    `;
-    return invoices.rows;
-  } catch (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to fetch invoices.');
+export async function getSeller(id: string) {
+  const query = `SELECT * FROM sellers WHERE user_id = '${id}'`
+  const response = await sql.query(query)
+  
+  if (response.rows[0] == undefined || null){
+    return null;
+  } // Add in validation here!
+  const seller : Seller = {
+  
+      id: response.rows[0].id,
+      shop_name: response.rows[0].shop_name,
+      avatar: response.rows[0].avatar,
   }
+  return seller;
 }
+
+export async function getFavorites(id: string) : Promise<FavoriteItem[]>{
+
+  try{
+    const query = 
+    await sql.query(`SELECT 
+     f.user_id AS id,
+     p.seller_id AS seller_id,
+     p.id AS product_id,
+     p.product_name AS product_name,
+     p.description AS description,
+     p.price AS price,
+     p.category AS category,
+     p.image AS product_image
+    FROM favorites f INNER JOIN products p ON f.product_id = p.id 
+	  WHERE user_id = $1`,[id]);
+  const favorites = query.rows.map((row ) =>({
+    id: row.id,
+    seller_id : row.seller_id,
+    product_id : row.product_id,
+    product_name : row.product_name,
+    description : row.description,
+    price : row.price,
+    category : row.category,
+    image : row.product_image
+  }));
+  return favorites;
+}catch (error){
+  return [];
+} }
 
 export async function fetchInvoicesPages(
   userId: string,
   query: string,
 ) {
   try {
-    const count = await sql`SELECT COUNT(*)
-    FROM invoices
-    JOIN users ON invoices.user_id = users.id
-    WHERE
-      users.id = ${userId} AND (
-        users.name ILIKE ${`%${query}%`} OR
-        users.email ILIKE ${`%${query}%`} OR
-        invoices.amount::text ILIKE ${`%${query}%`} OR
-        invoices.date::text ILIKE ${`%${query}%`} OR
-        invoices.status ILIKE ${`%${query}%`}
-    )
-  `;
-    const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
-    return totalPages;
-  } catch (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to fetch total number of invoices.');
+    const query = await sql.query(`DELETE FROM favorites WHERE user_id = '${userId}' AND product_id = '${[productId]}'`)
+    revalidatePath(`/profile/${userId}`)
+  }
+    catch (error){
+      throw error;
+    }
+}
+
+// Product Functions
+export async function getProductList(id: string) : Promise<Product[]>{
+  try {const result = await sql.query("SELECT * FROM products WHERE seller_id = $1", [id]);
+  if (!result.rows){
+    return []};
+  const products = result.rows.map((row) => ({
+    id: row.id,
+    price: row.price,
+    sale_info: row.sale_info,
+    seller_id: row.seller_id,
+    product_name: row.product_name,
+    description: row.description,
+    category: row.category,
+    image: row.image,
+  }));
+  return products;} 
+  catch{
+    return [];
   }
 }
 
-export async function fetchInvoiceById(id: string) {
-  try {
-    const data = await sql<InvoiceForm>`
-      SELECT
-        invoices.id,
-        invoices.customer_id,
-        invoices.amount,
-        invoices.status
-      FROM invoices
-      WHERE invoices.id = ${id};
-    `;
+export async function getProductInfo(item: any){
+  const response = await sql.query(`GET * FROM sellers WHEN id = ${item}`)
+  const product : Product = {
+    id: response.rows[0].id,
+    price: response.rows[0].price,
+    sale_info: response.rows[0].sale_info,
+    seller_id: response.rows[0].seller_id,
+    product_name: response.rows[0],
+    description: response.rows[0],
+    category: response.rows[0],
+    image: response.rows[0]
+    };
+  return product }
 
-    const invoice = data.rows.map((invoice) => ({
-      ...invoice,
-      // Convert amount from cents to dollars
-      amount: invoice.amount / 100,
-    }));
+  export async function deleteProduct(id: string){
+    try{const response= await sql.query(`DELETE FROM products WHERE id = $1`, [id])
 
-    return invoice[0];
-  } catch (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to fetch invoice.');
+    }
+    catch(error){
+      console.error('Error deleting product' + error)
+
   }
-}
-
-export async function fetchCustomers() {
-  try {
-    const data = await sql<CustomerField>`
-      SELECT
-        id,
-        name
-      FROM customers
-      ORDER BY name ASC
-    `;
-
-    const customers = data.rows;
-    return customers;
-  } catch (err) {
-    console.error('Database Error:', err);
-    throw new Error('Failed to fetch all customers.');
   }
-}
-
-export async function fetchFilteredCustomers(query: string) {
-  try {
-    const data = await sql<CustomersTableType>`
-		SELECT
-		  customers.id,
-		  customers.name,
-		  customers.email,
-		  customers.image_url,
-		  COUNT(invoices.id) AS total_invoices,
-		  SUM(CASE WHEN invoices.status = 'pending' THEN invoices.amount ELSE 0 END) AS total_pending,
-		  SUM(CASE WHEN invoices.status = 'paid' THEN invoices.amount ELSE 0 END) AS total_paid
-		FROM customers
-		LEFT JOIN invoices ON customers.id = invoices.customer_id
-		WHERE
-		  customers.name ILIKE ${`%${query}%`} OR
-        customers.email ILIKE ${`%${query}%`}
-		GROUP BY customers.id, customers.name, customers.email, customers.image_url
-		ORDER BY customers.name ASC
-	  `;
-
-    const customers = data.rows.map((customer) => ({
-      ...customer,
-      total_pending: formatCurrency(customer.total_pending),
-      total_paid: formatCurrency(customer.total_paid),
-    }));
-
-    return customers;
-  } catch (err) {
-    console.error('Database Error:', err);
-    throw new Error('Failed to fetch customer table.');
+  
+  export async function deleteProductFromAllFavorites(id: string){
+    const query = `DELETE FROM favorites WHERE product_id = ${id} RETURNING product_id`;
+    try {
+      const response = await sql.query(query);
+    } 
+    catch(error){
+      console.error('Error deleting product' + error)
+    }
   }
-}
