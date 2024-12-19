@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { useSession, signIn } from 'next-auth/react';
 import styles from '../reviews.module.css';
+import ClientApp from "../../ClientApp";
 
 interface Review {
   reviewId: string;
@@ -17,6 +18,14 @@ interface ReviewsProps {
 }
 
 export default function Reviews({ reviews }: ReviewsProps) {
+  return (
+    <ClientApp>
+      <ReviewsContent reviews={reviews} />
+    </ClientApp>
+  );
+}
+
+function ReviewsContent({ reviews }: ReviewsProps) {
   const { data: session } = useSession();
   const [showForm, setShowForm] = useState(false);
   const [comment, setComment] = useState('');

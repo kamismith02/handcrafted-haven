@@ -44,7 +44,6 @@ const LoginForm: React.FC = () => {
           Sign in to your account
         </h2>
         <form className="font-sans" onSubmit={handleLogin}>
-          {/* Email Input */}
           <div className="mb-6">
             <label
               htmlFor="email"
