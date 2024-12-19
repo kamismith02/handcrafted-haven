@@ -25,7 +25,6 @@ export async function GET(request: Request, { params }: { params: { id: string }
 
     const product = data.rows[0];
 
-    // Tipando o map com a interface Review
     const reviews: Review[] = data.rows.map((row) => ({
       reviewId: row.review_id,
       userId: row.user_id,
