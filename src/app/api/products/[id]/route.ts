@@ -9,8 +9,8 @@ interface Review {
   createdAt: string;
 }
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
-  const { id } = await params;
+export async function GET(request: Request, context: { params: { id: string } }) {
+  const { id } = context.params;
   console.log("id", id);
 
   try {
