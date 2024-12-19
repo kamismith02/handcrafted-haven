@@ -29,3 +29,26 @@ export async function GET() {
     );
   }
 }
+
+export async function POST(req: Request) {
+  try {
+    const { price, product_name, description, category, image, seller_id } = await req.json();
+
+    const result = await sql`
+      INSERT INTO products (price, product_name, description, category, image, seller_id)
+      VALUES (${price}, ${product_name}, ${description}, ${category}, ${image}, ${seller_id})
+      RETURNING id, product_name, price, description, category, image, seller_id
+    `;
+
+    const product = result.rows[0];
+
+    return NextResponse.json({ product });
+  } catch (error) {
+    console.error('Failed to create product:', error);
+
+    return NextResponse.json(
+      { error: 'Failed to create product' },
+      { status: 500 }
+    );
+  }
+}
