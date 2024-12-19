@@ -4,6 +4,9 @@ import { ProductCardWrapper } from '@/app/ui/profile/cards';
 import InitializeShop from '@/app/ui/shop/InitializeShop';
 import { getSeller, getProductList } from '@/app/lib/data';
 import { notFound } from "next/navigation";
+import Link from "next/link";
+
+
 
 export const metadata: Metadata = {
     title: 'Manage Shop',
@@ -14,6 +17,8 @@ export default async function Page (props: { params: Promise<{ id: string }> }) 
     const id = params.id;
     const seller = await getSeller(id).catch(error => {console.log('error fetching user: '+ error)})
 
+
+    
     if (!seller){
         notFound()
     }
@@ -42,7 +47,7 @@ export default async function Page (props: { params: Promise<{ id: string }> }) 
                     <div className="w-full lg:w-2/3 flex flex-col items-center justify-center">
                         <h2 className="mb-2 text-2xl font-bold tracking-tight text-*-slate-gray-dark">Your Shop Products</h2>
                         <div className="p-4 flex flex-col justify-between flex-grow">
-                            <ProductCardWrapper products={products} />
+                        <ProductCardWrapper products={products} />
                         </div>
                     </div>
                 </div>
