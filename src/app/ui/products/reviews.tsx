@@ -24,12 +24,12 @@ export default function Reviews({ reviews }: ReviewsProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!session || !session.user) {
+  
+    if (!session || !session.user || !session.user.id) {
       signIn();
       return;
     }
-
+  
     const response = await fetch('/api/reviews', {
       method: 'POST',
       body: JSON.stringify({
@@ -41,7 +41,7 @@ export default function Reviews({ reviews }: ReviewsProps) {
         'Content-Type': 'application/json',
       },
     });
-
+  
     if (response.ok) {
       setComment('');
       setRating(1);

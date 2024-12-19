@@ -52,3 +52,7 @@ export type SessionPayload = {
   userId: string | number;
   expiresAt: Date;
 };
+export type Revenue = {
+  month: string;
+  revenue: number;
+};

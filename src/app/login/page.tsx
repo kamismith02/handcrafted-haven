@@ -1,29 +1,49 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 import { lora } from "@/app/ui/fonts";
 import { ExclamationCircleIcon } from "@heroicons/react/24/outline";
 import "../ui/globals.css";
 import styles from "../ui/page.module.css";
-import { useActionState } from "react";
-import { useFormStatus } from "react-dom";
-import { login } from "./actions";
+import ClientApp from "../ClientApp";
 
 const LoginForm: React.FC = () => {
-  const [state, loginAction] = useActionState(login, undefined);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const result = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
+
+    if (result?.error) {
+      setError("Invalid email or password");
+    } else {
+      router.push("/profile");
+    }
+  };
+
   const handleSignUpClick = (event: React.MouseEvent) => {
     event.preventDefault();
-    router.push('/register');
+    router.push("/register");
   };
+
   return (
+    <ClientApp>
     <div className="flex items-center justify-center">
       <div className="bg-white p-12 rounded-lg shadow-md w-full max-w-xl">
         <h2 className="text-3xl font-bold mb-8 text-gray-900 text-center font-sans">
           Sign in to your account
         </h2>
-        <form className="font-sans" action={loginAction}>
+        <form className="font-sans" onSubmit={handleLogin}>
           {/* Email Input */}
           <div className="mb-6">
             <label
@@ -37,16 +57,19 @@ const LoginForm: React.FC = () => {
               id="email"
               placeholder="name@email.com"
               className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#3c574f] outline-none"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
-          {state?.errors?.email && (
+          
+          {error && (
             <div className="mt-2 mb-4 flex items-center text-red-500">
-            <ExclamationCircleIcon className="mr-2 h-5 w-5" />
-            <p className="text-sm">{state.errors.email}</p>
-          </div>
+              <ExclamationCircleIcon className="mr-2 h-5 w-5" />
+              <p className="text-sm">{error}</p>
+            </div>
           )}
 
-          {/* Password Input */}
+          
           <div className="mb-6">
             <label
               htmlFor="password"
@@ -59,16 +82,11 @@ const LoginForm: React.FC = () => {
               id="password"
               placeholder="••••••••"
               className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-[#3c574f] outline-none"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          {state?.errors?.password && (
-            <div className="mt-2 mb-4 flex items-center text-red-500">
-            <ExclamationCircleIcon className="mr-2 h-5 w-5" />
-            <p className="text-sm">{state.errors.password}</p>
-          </div>
-          )}
 
-          {/* Remember Me + Forgot Password */}
           <div className="flex items-center justify-between mb-8">
             <label className="flex items-center">
               <input
@@ -82,11 +100,14 @@ const LoginForm: React.FC = () => {
             </a>
           </div>
 
-          {/* Sign In Button */}
-          <SubmitButton />
+          <button
+            type="submit"
+            className="w-full bg-red-800 text-white py-3 px-4 rounded-lg hover:bg-opacity-90 focus:outline-none"
+          >
+            Sign in
+          </button>
         </form>
 
-        {/* Sign Up Link */}
         <p className="text-gray-600 text-center text-sm mt-8">
           Don’t have an account yet?{" "}
           <a
@@ -99,17 +120,7 @@ const LoginForm: React.FC = () => {
         </p>
       </div>
     </div>
-  );
-}
-
-function SubmitButton() {
-  const { pending } = useFormStatus();
-
-  return (
-    <button disabled={pending} type="submit"
-      className="w-full bg-red-800 text-white py-3 px-4 rounded-lg hover:bg-opacity-90 focus:outline-none">
-      Sign in
-    </button>
+    </ClientApp>
   );
 };
 

@@ -1,14 +1,7 @@
 "use server";
-
 import { z } from "zod";
-import { createSession, deleteSession } from "@/app/lib/session";
+import { signIn, signOut } from "next-auth/react";
 import { redirect } from "next/navigation";
-
-const testUser = {
-  id: "1",
-  email: "jmasebe@gmail.com",
-  password: "12345678",
-};
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }).trim(),
@@ -29,7 +22,13 @@ export async function login(prevState: any, formData: FormData) {
 
   const { email, password } = result.data;
 
-  if (email !== testUser.email || password !== testUser.password) {
+  const response = await signIn("credentials", {
+    redirect: false,
+    email,
+    password,
+  });
+
+  if (response?.error) {
     return {
       errors: {
         email: ["Invalid email or password"],
@@ -37,12 +36,10 @@ export async function login(prevState: any, formData: FormData) {
     };
   }
 
-  await createSession(testUser.id);
-
   redirect("/products");
 }
 
 export async function logout() {
-  await deleteSession();
+  await signOut({ callbackUrl: "/login" });
   redirect("/login");
 }
