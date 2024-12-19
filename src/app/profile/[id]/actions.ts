@@ -31,6 +31,7 @@ export type Seller = {
     id: string;
     shop_name: string;
     avatar: string;
+    description: string;
     }
 
 const FormSchema = z.object({

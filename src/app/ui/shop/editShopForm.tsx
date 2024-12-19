@@ -14,9 +14,9 @@ type ShopFormData = z.infer<typeof shopSchema>;
 export default function EditShopForm({
   seller
 }: {
-  seller: { shop_name: string; description: string; avatar_url: string };
+  seller: { shop_name: string; description: string; avatar: string };
 }) {
-  const {
+const {
     register,
     handleSubmit,
     formState: { errors },
@@ -25,7 +25,7 @@ export default function EditShopForm({
     defaultValues: {
       shop_name: seller.shop_name,
       description: seller.description,
-      avatar_url: seller.avatar_url,
+      avatar_url: seller.avatar,
     },
   });
 
