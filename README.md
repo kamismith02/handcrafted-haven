@@ -4,4 +4,8 @@ Overview: Handcrafted Haven is an innovative web application that aims to provid
 
 Handcrafted Haven aims to revolutionize the way handcrafted items are discovered, appreciated, and acquired. By providing a digital platform for artisans to showcase their creativity and connect with a broader audience, the web application fosters a thriving community of passionate creators and conscious consumers. With its user-friendly features, secure e-commerce capabilities, and emphasis on customization and community engagement, Handcrafted Haven is set to become the go-to destination for those seeking unique, handcrafted treasures.
 
+CREDENTIAL FOR LOGIN: { email: jane.smith1@foobar.com,  password: newpassword123 }
+
+                        
+
 Group Members: Kami Smith, Kjirsten Hernandez, Amanda Schneider Migliorini, Jojo Masebe, Javier Espinoza Yungan
