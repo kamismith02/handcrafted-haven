@@ -1,22 +1,25 @@
-'use client';
-
 import React, { useState } from 'react';
 import { useSession, signIn } from 'next-auth/react';
 import styles from '../reviews.module.css';
-
-interface Review {
-  reviewId: string;
-  userName: string;
-  comment: string;
-  rating: number;
-  createdAt: string;
-}
+import ClientApp from "../../ClientApp";
+import { Product } from '../../../types/product';
+import { Review } from '../../../types/review';
 
 interface ReviewsProps {
   reviews: Review[];
+  product: Product | null;
+  setReviews: React.Dispatch<React.SetStateAction<Review[]>>;
 }
 
-export default function Reviews({ reviews }: ReviewsProps) {
+export default function Reviews({ reviews, product, setReviews }: ReviewsProps) {
+  return (
+    <ClientApp>
+      <ReviewsContent reviews={reviews} product={product} setReviews={setReviews} />
+    </ClientApp>
+  );
+}
+
+function ReviewsContent({ reviews, product, setReviews }: ReviewsProps) {
   const { data: session } = useSession();
   const [showForm, setShowForm] = useState(false);
   const [comment, setComment] = useState('');
@@ -24,28 +27,31 @@ export default function Reviews({ reviews }: ReviewsProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+  
 
-    if (!session || !session.user) {
-      signIn();
-      return;
-    }
-
+  
     const response = await fetch('/api/reviews', {
       method: 'POST',
       body: JSON.stringify({
         comment,
         rating,
-        userId: session.user.id,
+        userId: session?.user.id,
+        productId: product?.id,
       }),
       headers: {
         'Content-Type': 'application/json',
       },
     });
-
+  
     if (response.ok) {
       setComment('');
       setRating(1);
       setShowForm(false);
+
+      const data = await fetch(`/api/products/${product?.id}`);
+      const result = await data.json();
+      setReviews(result.reviews);
+
     } else {
       console.error('Failed to submit review');
     }

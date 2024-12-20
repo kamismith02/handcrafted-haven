@@ -6,25 +6,9 @@ import styles from '../../ui/product.module.css';
 import Reviews from '../../ui/products/reviews';
 import ProductCards from '../../ui/products/ProductCards';
 import { useParams } from 'next/navigation';
+import { Product } from '../../../types/product';
+import { Review } from '../../../types/review'
 
-interface Product {
-  id: string;
-  price: number;
-  sale_info: string;
-  product_name: string;
-  description: string;
-  category: string;
-  image: string;
-}
-
-interface Review {
-  reviewId: string;
-  userId: string;
-  userName: string;
-  comment: string;
-  rating: number;
-  createdAt: string;
-}
 
 export default function Page() {
   const { id } = useParams();
@@ -41,17 +25,21 @@ export default function Page() {
           setReviews(data.reviews);
         })
         .catch((error) => console.error('Error fetching the product:', error));
+    }
+  }, [id]);
 
+  useEffect(() => {
+    if (product?.category) {
       fetch('/api/products')
         .then((res) => res.json())
         .then((data) => {
           const related = data.products.filter(
-            (p: Product) => p.category === product?.category && p.id !== id
+            (p: Product) => p.category === product.category && p.id !== product.id
           );
           setRelatedProducts(related.slice(0, 5));
         });
     }
-  }, [id, product?.category]);
+  }, [product?.category]);
 
   const addProduct = (e: React.FormEvent) => {
     e.preventDefault();
@@ -87,24 +75,23 @@ export default function Page() {
           <div><p className={styles.productDescription}>{product.description}</p></div>
         </div>
 
-          <div className={styles.footerSection}>
-            <h2 className={styles.productPrice}>U$ {Number(product.price).toFixed(2)}</h2>
-            <button
-              type="button"
-              className={styles.addToCartButton}
-              onClick={addProduct}
-            >
-              Add to Cart
-            </button>
-          </div>
-        
+        <div className={styles.footerSection}>
+          <h2 className={styles.productPrice}>U$ {Number(product.price).toFixed(2)}</h2>
+          <button
+            type="button"
+            className={styles.addToCartButton}
+            onClick={addProduct}
+          >
+            Add to Cart
+          </button>
+        </div>
       </div>
 
-      <Reviews reviews={reviews} />
+      <Reviews reviews={reviews} product={product} setReviews={setReviews} />
 
       <div className={styles.relatedProductsContainer}>
         <h2>Related Products</h2>
-        <div className={styles.cardList}> 
+        <div className={styles.cardList}>
           {relatedProducts.map((item) => (
             <ProductCards
               key={item.id}

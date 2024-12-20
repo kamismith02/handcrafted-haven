@@ -17,7 +17,7 @@ export async function GET() {
 
     const products = result.rows;
 
-    console.log('Fetched products:', products);
+   // console.log('Fetched products:', products);
 
     return NextResponse.json({ products });
   } catch (error) {
