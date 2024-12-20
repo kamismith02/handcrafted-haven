@@ -1,5 +1,5 @@
 "use server";
-import { signIn } from "next-auth/react";  // Corrigindo a importação
+import { signIn } from "next-auth/react";
 import { sql } from "@vercel/postgres";
 import { revalidatePath } from "next/cache";
 
@@ -9,8 +9,8 @@ export async function authenticate(
 ) {
   try {
     const result = await signIn("credentials", {
-      redirect: false,  // Evita o redirecionamento automático
-      ...formData,      // Dados do formulário de login
+      redirect: false,
+      ...formData,
     });
 
     if (result?.error) {
@@ -22,13 +22,12 @@ export async function authenticate(
       }
     }
 
-    return "Logged in successfully"; // Se não houver erro, a autenticação foi bem-sucedida
+    return "Logged in successfully"; 
   } catch (error) {
-    // Tratar o erro genérico
     if (error instanceof Error) {
-      console.error(error.message); // Log de erro
+      console.error(error.message);
       return "An error occurred.";
     }
-    throw error;  // Caso seja um erro desconhecido
+    throw error;
   }
 }

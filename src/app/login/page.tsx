@@ -33,7 +33,7 @@ const LoginForm: React.FC = () => {
 
   const handleSignUpClick = (event: React.MouseEvent) => {
     event.preventDefault();
-    router.push("/register");
+    router.push("/login");
   };
 
   return (

@@ -1,9 +1,12 @@
-import NextAuth, { AuthOptions } from "next-auth";
+import { NextResponse } from "next/server";
+import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { compare } from "bcrypt";
 import { sql } from "@vercel/postgres";
 
-const authOptions: AuthOptions = {
+import { SessionStrategy } from "next-auth";
+
+const authOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -33,16 +36,19 @@ const authOptions: AuthOptions = {
         }
 
         return { id: user.id, name: user.full_name, email: user.email };
-      }
+      },
     }),
   ],
   pages: {
     signIn: "/login",
   },
   session: {
-    strategy: "jwt",
+    strategy: "jwt" as SessionStrategy,
   },
   secret: process.env.NEXTAUTH_SECRET,
+  debug: true,
 };
 
-export const { GET, POST } = NextAuth(authOptions);
+const handler = NextAuth(authOptions);
+
+export { handler as GET, handler as POST };

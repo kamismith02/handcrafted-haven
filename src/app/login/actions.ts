@@ -24,8 +24,8 @@ export async function login(prevState: any, formData: FormData) {
 
   const response = await signIn("credentials", {
     redirect: false,
-    email,
-    password,
+    email: formData.get('email'),
+    password: formData.get('password')
   });
 
   if (response?.error) {
